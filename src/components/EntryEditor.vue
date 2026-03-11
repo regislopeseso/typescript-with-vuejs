@@ -20,8 +20,6 @@ const handleTextInput = (e: Event) => {
   } else {
     text.value = textarea.value = textarea.value.substring(0, maxChars);
   }
-
-  e.preventDefault();
 };
 </script>
 <template>
