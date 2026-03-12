@@ -3,6 +3,7 @@ import EmojiField from "@/components/EmojiField.vue";
 import ArrowCircleRight from "@/assets/icons/arrow-circle-right.svg";
 import { ref, computed } from "vue";
 import type Emoji from "@/types/Emoji";
+import Entry from "@/types/Entry";
 
 // data
 
@@ -17,7 +18,7 @@ const maxChars = 280;
 // events
 
 defineEmits<{
-  (e: "@create", entry: { text: string; emoji: Emoji | null }): void;
+  (e: "@create", entry: Entry): void;
 }>();
 
 // methods
@@ -33,7 +34,18 @@ const handleTextInput = (e: Event) => {
 };
 </script>
 <template>
-  <form class="entry-form" @submit.prevent="$emit('@create', { text, emoji })">
+  <form
+    class="entry-form"
+    @submit.prevent="
+      $emit('@create', {
+        id: Math.random(),
+        body: text,
+        emoji,
+        userId: 1,
+        createdAt: new Date(),
+      })
+    "
+  >
     <textarea
       :value="text"
       @keyup="handleTextInput"
