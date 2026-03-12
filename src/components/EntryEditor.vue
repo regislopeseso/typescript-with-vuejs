@@ -16,7 +16,9 @@ const maxChars = 280;
 
 // events
 
-defineEmits(["@create"]);
+defineEmits<{
+  (e: "@create", entry: { text: string; emoji: Emoji | null }): void;
+}>();
 
 // methods
 
