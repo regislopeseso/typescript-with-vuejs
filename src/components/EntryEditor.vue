@@ -1,59 +1,50 @@
 <script lang="ts" setup>
 import EmojiField from "@/components/EmojiField.vue";
 import ArrowCircleRight from "@/assets/icons/arrow-circle-right.svg";
-import { ref, computed } from "vue";
 import type Emoji from "@/types/Emoji";
-import Entry from "@/types/Entry";
+import { ref, computed } from "vue";
+import type Entry from "@/types/Entry";
 
 // data
-
-const text = ref("");
-
+const body = ref("");
 const emoji = ref<Emoji | null>(null);
-
-const charCount = computed(() => text.value.length);
-
+const charCount = computed(() => body.value.length);
 const maxChars = 280;
 
 // events
-
-defineEmits<{
+const emit = defineEmits<{
   (e: "@create", entry: Entry): void;
 }>();
 
 // methods
-
 const handleTextInput = (e: Event) => {
   const textarea = e.target as HTMLTextAreaElement;
-
   if (textarea.value.length <= maxChars) {
-    text.value = textarea.value;
+    body.value = textarea.value;
   } else {
-    text.value = textarea.value = textarea.value.substring(0, maxChars);
+    body.value = textarea.value = textarea.value.substring(0, maxChars);
   }
+};
+const handleSubmit = () => {
+  emit("@create", {
+    body: body.value,
+    emoji: emoji.value,
+    createdAt: new Date(),
+    userId: 1,
+    id: Math.random(),
+  });
+  body.value = "";
+  emoji.value = null;
 };
 </script>
 <template>
-  <form
-    class="entry-form"
-    @submit.prevent="
-      $emit('@create', {
-        id: Math.random(),
-        body: text,
-        emoji,
-        userId: 1,
-        createdAt: new Date(),
-      })
-    "
-  >
+  <form class="entry-form" @submit.prevent="handleSubmit">
     <textarea
-      :value="text"
+      :value="body"
       @keyup="handleTextInput"
       placeholder="New Journal Entry for danielkelly_io"
     ></textarea>
-
     <EmojiField v-model="emoji" />
-
     <div class="entry-form-footer">
       <span>{{ charCount }} / {{ maxChars }}</span>
       <button>Remember <ArrowCircleRight width="20" /></button>
