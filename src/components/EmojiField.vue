@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import UseEmojis from "@/composables/UseEmojis";
+
 const { emojis } = UseEmojis();
 
 defineProps(["modelValue"]);
+
 defineEmits(["update:modelValue"]);
 </script>
 
@@ -16,7 +18,7 @@ defineEmits(["update:modelValue"]);
       @click="
         $emit(
           'update:modelValue',
-          emoji.name === modelValue ? null : emoji.name
+          emoji.name === modelValue ? null : emoji.name,
         )
       "
     ></component>

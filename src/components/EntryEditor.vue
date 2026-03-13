@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import EmojiField from "@/components/EmojiField.vue";
 import ArrowCircleRight from "@/assets/icons/arrow-circle-right.svg";
+import { ref, computed, onMounted, inject } from "vue";
+import { userInjectionKey } from "@/injectionKeys";
 import type Emoji from "@/types/Emoji";
-import { ref, computed, onMounted } from "vue";
 import type Entry from "@/types/Entry";
 
 // data
@@ -42,14 +43,19 @@ const handleSubmit = () => {
   body.value = "";
   emoji.value = null;
 };
+
+// in child component
+const user = inject(userInjectionKey);
 </script>
+3
+
 <template>
   <form class="entry-form" @submit.prevent="handleSubmit">
     <textarea
       :value="body"
       ref="textarea"
       @keyup="handleTextInput"
-      placeholder="New Journal Entry for danielkelly_io"
+      :placeholder="`New Journal Entry for ${user?.username || 'anonymous'}`"
     ></textarea>
 
     <EmojiField v-model="emoji" />
