@@ -8,6 +8,7 @@ import Entry from "./types/Entry";
 
 const entries: Entry[] = reactive([]);
 
+// eslint-disable-next-line
 const user: User = reactive({
   id: 1,
   username: "regislopes",
